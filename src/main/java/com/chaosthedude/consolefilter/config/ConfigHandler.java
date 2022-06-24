@@ -17,6 +17,7 @@ public class ConfigHandler {
 	public static Configuration config;
 
 	public static String[] messagesToFilter = {};
+	public static String[] classesToFilter = {};
 
 	public static void loadConfig(File configFile) {
 		config = new Configuration(configFile);
@@ -24,11 +25,12 @@ public class ConfigHandler {
 		config.load();
 		init();
 
-		MinecraftForge.EVENT_BUS.register(new ChangeListener());
+
 	}
 
 	public static void init() {
 		messagesToFilter = loadStringArray("Any console messages containing one of these strings will be hidden.", "messagesToFilter", messagesToFilter);
+		classesToFilter = loadStringArray("Any console messages from these classes will be hidden.", "classesToFilter", classesToFilter);
 
 		if (config.hasChanged()) {
 			config.save();
@@ -43,6 +45,10 @@ public class ConfigHandler {
 
 	public static List<String> getMessagesToFilter() {
 		return Lists.newArrayList(messagesToFilter);
+	}
+
+	public static List<String> getClassesToFilter() {
+		return Lists.newArrayList(classesToFilter);
 	}
 
 	public static class ChangeListener {
